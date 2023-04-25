@@ -1,16 +1,16 @@
-/*********************************************************/
-/*                                                       */
-/*          project : Elderly care robot                 */
-/*          file    : ecr.h                              */
-/*                                                       */
-/*********************************************************/
+/**********************************************************************/
+/*                                                                    */
+/*                       project : Elderly care robot                 */
+/*                       file    : ecr.h                              */
+/*                                                                    */
+/**********************************************************************/
 
 #ifndef  _ECR_H_
 #define  _ECR_H_
 
-//        ***additional libraries added here***        
-
 #include <time.h>
+#include <Arduino.h>
+//#include <HardwareSerial.h>
 
 //        ***motor pins are declared here***       
 
@@ -18,6 +18,10 @@
 #define LEFT_MOTOR_PIN_2        11
 #define RIGHT_MOTOR_PIN_1       12
 #define RIGHT_MOTOR_PIN_2       13
+
+//
+
+//#define   MOBILE_DEVICE         Serial1
 
 //        ***locations are defined here***
 
@@ -43,6 +47,6 @@ typedef struct task {
 }ROBOT_TASK;
 
 
-
+int connect_bluetooth_device();
 
 #endif

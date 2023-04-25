@@ -6,7 +6,7 @@
 /*********************************************************/
 
 #include "ecr.h"
-#include <Arduino.h>
+//#include <Arduino.h>
 
 int stop_motors()
 {

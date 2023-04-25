@@ -8,8 +8,8 @@
 /*          > On this time user can send a message to robot via (bluetooth)    */ 
 /*            mobile app.                                                      */
 /*          > Message will be in fixed format (text).                          */
-/*          > Message format : <task number> <space>                           */                 
-/*           
+/*          > Message format : <material> <space> <destination bed no> <space> */
+/*            <time>                                                           */
 /*                                                                             */
 /*******************************************************************************/
 
@@ -19,15 +19,17 @@
 #include "motors.c"
 #include "bluetooth_device.c"
 
-//        ***define serial ports here***        //
 #define   MOBILE_DEVICE            Serial1
+#define   CONSOLE                  Serial
+
+char message_received[30];
 
 ROBOT_TASK trip_1;
 ROBOT_TASK trip_2;
 ROBOT_TASK trip_3;
 ROBOT_TASK trip_4;
 
-#if 1
+#if 0
 int connect_bluetooth_device()
 {
 	int iterance=0;
@@ -46,7 +48,12 @@ int connect_bluetooth_device()
 void setup() 
 {
     MOBILE_DEVICE.begin(9600);
-    connect_bluetooth_device();
+    CONSOLE.begin(19200);
+    CONSOLE.println("ECR");
+    if(connect_bluetooth_device())
+    {
+        parse_message();
+    }
 }
 
 void loop() 
@@ -56,4 +63,16 @@ void loop()
       res= move_forward(2000);
 }
 
+int message_available()
+{
+    return(MOBILE_DEVICE.available());
+}
 
+char message_read()
+{
+    return(MOBILE_DEVICE.read());
+}
+void console_print(char* message) 
+{
+  Serial.print(message);
+}
