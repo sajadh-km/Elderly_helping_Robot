@@ -29,9 +29,9 @@
 #define WATER                    2
 #define MEDICINE                 3
 #define BOOK                     4
-#define HUMAN_1                  5
-#define HUMAN_2                  6
-#define HUMAN_3                  7
+#define BED_1                  5
+#define BED_2                  6
+#define BED_3                  7
 
 //        ***LED pins are declsred here***        
 
@@ -48,5 +48,7 @@ typedef struct task {
 
 
 int connect_bluetooth_device();
+char create_task();
+char get_message();
 
 #endif

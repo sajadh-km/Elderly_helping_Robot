@@ -24,10 +24,7 @@
 
 char message_received[30];
 
-ROBOT_TASK trip_1;
-ROBOT_TASK trip_2;
-ROBOT_TASK trip_3;
-ROBOT_TASK trip_4;
+ROBOT_TASK trip[4];
 
 #if 0
 int connect_bluetooth_device()
@@ -83,4 +80,8 @@ void message_reply(char* text)
 void console_print(char* message) 
 {
   Serial.print(message);
+}
+void print_binary(char message)
+{
+    CONSOLE.print(message, BIN);  
 }
