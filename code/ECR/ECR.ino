@@ -1,17 +1,17 @@
-/*******************************************************************************/
-/*                                                                             */
-/*          project       : Elderly care robot                                 */
-/*          file          : ECR.c                                              */
-/*          working method:                                                    */
-/*          > After switching on the, the robot will wait for any instruction  */
-/*            from user                                                        */
-/*          > On this time user can send a message to robot via (bluetooth)    */ 
-/*            mobile app.                                                      */
-/*          > Message will be in fixed format (text).                          */
-/*          > Message format : <material> <space> <destination bed no> <space> */
-/*            <time>                                                           */
-/*                                                                             */
-/*******************************************************************************/
+/***************************************************************************************/
+/*                                                                                     */
+/*          project       : Elderly care robot                                         */
+/*          file          : ECR.c                                                      */
+/*          working method:                                                            */
+/*          > After switching on the, the robot will wait for any instruction          */
+/*            from user                                                                */
+/*          > On this time user can send a message to robot via (bluetooth)            */ 
+/*            mobile app.                                                              */
+/*          > Message will be in fixed format (text).                                  */
+/*          > Message format : <material> <space> <destination bed no> <space>         */
+/*            <time>                                                                   */
+/*                                                                                     */
+/***************************************************************************************/
 
 
 
@@ -50,17 +50,21 @@ void setup()
     MOBILE_DEVICE.begin(9600);
     CONSOLE.begin(19200);
     CONSOLE.println("ECR");
-    if(connect_bluetooth_device())
-    {
-        parse_message();
-    }
+    memset(message_received, '\0', sizeof(message_received));
+    
 }
 
 void loop() 
 {
       int res =  -1;
-      res= stop_motors();
-      res= move_forward(2000);
+      static unsigned long lastTime = 0;
+      unsigned long currentTime = millis();
+      if (currentTime - lastTime >= 10) 
+      {
+          lastTime = currentTime;
+          check_for_any_new_message();
+      }
+      
 }
 
 int message_available()
@@ -71,6 +75,10 @@ int message_available()
 char message_read()
 {
     return(MOBILE_DEVICE.read());
+}
+void message_reply(char* text)
+{
+    Serial1.print(text);
 }
 void console_print(char* message) 
 {

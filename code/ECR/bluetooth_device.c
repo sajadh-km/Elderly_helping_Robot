@@ -1,3 +1,4 @@
+#include "Arduino.h"
 /******************************************************************/
 /*                                                                */
 /*                 project : Elderly care robot                   */
@@ -10,6 +11,7 @@
 extern char message_received[30];
 extern int message_available();
 extern char message_read();
+extern void message_reply(char* text);
 extern void console_print(char* message);
 int connect_bluetooth_device()
 {
@@ -30,12 +32,26 @@ int connect_bluetooth_device()
 int parse_message()
 {
     int message_index = 0;                                   // Initialize message index to zero
-    while (message_available() && message_index < 29)        // Check if there's any data available on Serial and if message index is less than 39
-    {
+    int wait;
+    while ( message_index < 29)        // Check if there's any data available on Serial and if message index is less than 39
+    {     
+        wait=1000;
+        while(!message_available() && wait)
+        {
+            wait--;
+            delayMicroseconds(100);
+        }
         char c = message_read();                             // Read the incoming character
         if (c != '\n')                                       // If the character is not a newline
         {
             message_received[message_index++] = c;           // Append the character to the message string and increment the message index
+            if(message_index==5)
+            {
+              message_index=8;
+              message_received[5]=':'  ;
+              message_received[6]='0'  ;
+              message_received[7]='0'  ;
+            }
         }
         else                                                 // If the character is a newline
         {
@@ -46,3 +62,14 @@ int parse_message()
     }
     return (0);
 }
+
+
+char check_for_any_new_message()
+{     
+    if(connect_bluetooth_device())
+    {
+        parse_message();
+        console_print(message_received);
+    }    
+}
+
