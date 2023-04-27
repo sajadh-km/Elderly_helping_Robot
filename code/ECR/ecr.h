@@ -49,6 +49,7 @@
 #define ON_LEFT                  0b00000001
 #define ON_RIGHT                 0b00000010
 #define ON_LINE                  0b00000011
+#define OUTSIDE_LINE             0b00000000 
 
 
 typedef struct task {
@@ -68,5 +69,5 @@ int turn_left(int duration);
 int turn_right(int duration);
 char check_sensors();
 void follow_line();
-
+int get_time();
 #endif

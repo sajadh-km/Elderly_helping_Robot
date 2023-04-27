@@ -19,6 +19,7 @@
 #include "motors.c"
 #include "bluetooth_device.c"
 #include "navigate.c"
+#include "ecr.h"
 
 #define   MOBILE_DEVICE            Serial1
 #define   CONSOLE                  Serial
@@ -69,11 +70,9 @@ void loop()
       if (currentTime - lastTime >= 10) 
       {
           lastTime = currentTime;
-          //check_for_any_new_message();
+          check_for_any_new_message();
       }
-      follow_line();
-      //console_print("test\n");
-      //delay(1000);
+      get_time();
 }
 
 int message_available()
@@ -97,3 +96,4 @@ void print_binary(char message)
 {
     CONSOLE.print(message, BIN);  
 }
+
