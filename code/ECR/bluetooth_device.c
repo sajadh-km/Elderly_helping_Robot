@@ -1,11 +1,11 @@
-#include "Arduino.h"
+
 /******************************************************************/
 /*                                                                */
 /*                 project : Elderly care robot                   */
 /*                 file    : bluetooth_device.c                   */
 /*                                                                */
 /******************************************************************/
-
+#include "Arduino.h"
 #include "ecr.h"
 
 extern char message_received[30];

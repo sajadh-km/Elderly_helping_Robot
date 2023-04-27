@@ -18,6 +18,7 @@
 #include "ecr.h"
 #include "motors.c"
 #include "bluetooth_device.c"
+#include "navigate.c"
 
 #define   MOBILE_DEVICE            Serial1
 #define   CONSOLE                  Serial
@@ -48,7 +49,16 @@ void setup()
     CONSOLE.begin(19200);
     CONSOLE.println("ECR");
     memset(message_received, '\0', sizeof(message_received));
-    
+    //  ***declare outputs***
+    pinMode(LEFT_MOTOR_PIN_1, OUTPUT);
+    pinMode(RIGHT_MOTOR_PIN_1, OUTPUT);
+    pinMode(LEFT_MOTOR_PIN_2, OUTPUT);
+    pinMode(RIGHT_MOTOR_PIN_2, OUTPUT);
+
+    //  ***declare inputs***
+    pinMode(LEFT_LINE_SENSOR, INPUT);
+    pinMode(RIGHT_LINE_SENSOR, INPUT);
+    move_forward(1000);
 }
 
 void loop() 
@@ -59,9 +69,11 @@ void loop()
       if (currentTime - lastTime >= 10) 
       {
           lastTime = currentTime;
-          check_for_any_new_message();
+          //check_for_any_new_message();
       }
-      
+      follow_line();
+      //console_print("test\n");
+      //delay(1000);
 }
 
 int message_available()

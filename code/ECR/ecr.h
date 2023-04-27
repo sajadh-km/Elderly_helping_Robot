@@ -14,10 +14,10 @@
 
 //        ***motor pins are declared here***       
 
-#define LEFT_MOTOR_PIN_1        10
-#define LEFT_MOTOR_PIN_2        11
-#define RIGHT_MOTOR_PIN_1       12
-#define RIGHT_MOTOR_PIN_2       13
+#define LEFT_MOTOR_PIN_1        9
+#define LEFT_MOTOR_PIN_2        10
+#define RIGHT_MOTOR_PIN_1       11
+#define RIGHT_MOTOR_PIN_2       12
 
 //
 
@@ -39,6 +39,17 @@
 #define GREEN                    2
 #define BLUE                     3
 
+//        ***IR line sensors***
+
+#define LEFT_LINE_SENSOR         2
+#define RIGHT_LINE_SENSOR        3
+
+//        ***line sensor positions***
+
+#define ON_LEFT                  0b00000001
+#define ON_RIGHT                 0b00000010
+#define ON_LINE                  0b00000011
+
 
 typedef struct task {
     time_t time;                  // time of trip (using time_t data type)
@@ -50,5 +61,12 @@ typedef struct task {
 int connect_bluetooth_device();
 char create_task();
 char get_message();
+int move_forward(int duration);
+int move_back(int duration);
+int stop_motors();
+int turn_left(int duration);
+int turn_right(int duration);
+char check_sensors();
+void follow_line();
 
 #endif
