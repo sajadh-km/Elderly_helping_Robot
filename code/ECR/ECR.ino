@@ -16,11 +16,14 @@
 
 
 #include "ecr.h"
+
 #include "motors.c"
 #include "bluetooth_device.c"
 #include "navigate.c"
-#include "ecr.h"
-
+/*
+#include "rtc.cpp"
+#include "color.c"
+*/
 #define   MOBILE_DEVICE            Serial1
 #define   CONSOLE                  Serial
 
@@ -60,6 +63,7 @@ void setup()
     pinMode(LEFT_LINE_SENSOR, INPUT);
     pinMode(RIGHT_LINE_SENSOR, INPUT);
     move_forward(1000);
+    Serial.print(sizeof(time_t));
 }
 
 void loop() 

@@ -15,6 +15,8 @@ extern void message_reply(char* text);
 extern void console_print(char* message);
 extern void print_binary(char message);
 extern ROBOT_TASK trip[4];
+
+
 int connect_bluetooth_device()
 {
 	int iterance=0;
@@ -80,24 +82,45 @@ char create_task()
 {
     char num;
     char i,j;
-    char action[20];
-    memset (action, 0x00, 10);
+    char hour;
+    char minute;
+    bool message_invalid=0;
+    char txt[20];
+    memset (txt, 0x00, 10);
     num=get_message();
-    console_print("\naction:");
     
+    txt[0] = message_received[0];
+    txt[1] = message_received[1];
+    hour = atoi(txt);
+    if(hour < 25 && hour >=0)
+    trip[num].time.hour=hour;
+    else 
+    message_invalid =1;
+    memset (txt, 0x00, 10);
+    //console_print("\naction:");
     for(i=9; i<19; i++)
     {
       j=i-9;
       if(message_received[i]==' ')
       break;
-      action[j]=message_received[i];
+      txt[j]=message_received[i];
     }
-    console_print(action);
+    /***   FOOD | WATER | MEDICINE | BOOK   ***/
+    if( !(strcmp(txt, "FOOD")) )
+    trip[num].source_location= FOOD;
+    else if ( !(strcmp(txt, "MEDICINE")))
+    trip[num].source_location= MEDICINE;
+    else if( !(strcmp(txt, "WATER")))
+    trip[num].source_location= WATER;
+    else
+    message_invalid= 1;
+
 
 }
+
 char get_message()
 {
-    //#define TASK_LIST_LOG  
+    #define TASK_LIST_LOG  
     static char task_list=0b00000000;
     char task_number;
     #ifdef TASK_LIST_LOG
@@ -130,6 +153,11 @@ char get_message()
         sprintf(msg, "\nnum3");
         console_print(msg);                
         #endif
+    }
+    else
+    {
+        console_print("tasks filled");
+        message_reply("tasks filled");
     }
     #ifdef TASK_LIST_LOG
     sprintf(msg, "\nList: ");
