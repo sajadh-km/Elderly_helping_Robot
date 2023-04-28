@@ -15,7 +15,7 @@ extern void message_reply(char* text);
 extern void console_print(char* message);
 extern void print_binary(char message);
 extern ROBOT_TASK trip[4];
-
+extern char num_of_task;
 
 int connect_bluetooth_device()
 {
@@ -37,6 +37,7 @@ int parse_message()
 {
     int message_index = 0;                                   // Initialize message index to zero
     int wait;
+    memset(message_received, '\0', 30);    
     while ( message_index < 29)        // Check if there's any data available on Serial and if message index is less than 39
     {     
         wait=1000;
@@ -86,8 +87,10 @@ char create_task()
     char minute;
     bool message_invalid=0;
     char txt[20];
-    memset (txt, 0x00, 10);
+    char starting_address_of_destination ;
+    memset (txt, '\0', 20);
     num=get_message();
+    num_of_task= num;
     
     txt[0] = message_received[0];
     txt[1] = message_received[1];
@@ -96,11 +99,12 @@ char create_task()
     trip[num].time.hour=hour;
     else 
     message_invalid =1;
-    memset (txt, 0x00, 10);
+    memset (txt, '\0', 20);
     //console_print("\naction:");
     for(i=9; i<19; i++)
     {
       j=i-9;
+      starting_address_of_destination =i +1;
       if(message_received[i]==' ')
       break;
       txt[j]=message_received[i];
@@ -114,8 +118,18 @@ char create_task()
     trip[num].source_location= WATER;
     else
     message_invalid= 1;
-
-
+    memset (txt, '\0', 20);
+    for(i= starting_address_of_destination; i < (starting_address_of_destination + 19); i++)
+    {
+        j= i- starting_address_of_destination ;
+        txt[j] = message_received[i];
+        if(message_received[i]== 0x00)
+        break;
+    }
+    if( !strcmp(txt, "BED1"))
+    trip[num].dest_location= BED_1;
+    else if( !strcmp(txt, "BED2"))
+    trip[num].dest_location= BED_2;    
 }
 
 char get_message()

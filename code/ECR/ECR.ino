@@ -28,7 +28,7 @@
 #define   CONSOLE                  Serial
 
 char message_received[30];
-
+char num_of_task;
 ROBOT_TASK trip[4];
 
 #if 0
@@ -62,13 +62,13 @@ void setup()
     //  ***declare inputs***
     pinMode(LEFT_LINE_SENSOR, INPUT);
     pinMode(RIGHT_LINE_SENSOR, INPUT);
-    move_forward(1000);
-    Serial.print(sizeof(time_t));
 }
 
 void loop() 
 {
       int res =  -1;
+      int i, j;
+      char txt[30];
       static unsigned long lastTime = 0;
       unsigned long currentTime = millis();
       if (currentTime - lastTime >= 10) 
@@ -77,6 +77,15 @@ void loop()
           check_for_any_new_message();
       }
       get_time();
+      for(i=0; i < num_of_task; i++)
+      {
+          j=i+1;
+          console_print("**********************************************************************\n");
+          sprintf(txt, "task%d  |  time:  %d:%d  |  material: %d  |  destination: %d\n", j, trip[j].time.hour,
+                                             trip[j].time.minute, trip[j].source_location, trip[j].dest_location);          
+          console_print(txt);
+          console_print("**********************************************************************\n");
+      }
 }
 
 int message_available()
@@ -94,7 +103,7 @@ void message_reply(char* text)
 }
 void console_print(char* message) 
 {
-  Serial.print(message);
+  Serial.println(message);
 }
 void print_binary(char message)
 {
