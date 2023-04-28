@@ -37,7 +37,7 @@ int parse_message()
 {
     int message_index = 0;                                   // Initialize message index to zero
     int wait;
-    memset(message_received, '\0', 30);    
+    memset(message_received, 0x00, sizeof(message_received));    
     while ( message_index < 29)        // Check if there's any data available on Serial and if message index is less than 39
     {     
         wait=1000;
@@ -46,6 +46,8 @@ int parse_message()
             wait--;
             delayMicroseconds(100);
         }
+        if(! wait)
+        break;
         char c = message_read();                             // Read the incoming character
         if (c != '\n')                                       // If the character is not a newline
         {
@@ -60,7 +62,7 @@ int parse_message()
         }
         else                                                 // If the character is a newline
         {
-            message_received[message_index] = '\0';          // Append a null terminator to the end of the message string
+            message_received[message_index] = '\0';          // Append a nullset to the end of the message string
             message_index = 0;                               // Reset message index to zero for the next message
             break; 
         }	
@@ -130,19 +132,30 @@ char create_task()
     else if( !(strcmp(txt, "WATER")))
     trip[num].source_location= WATER;
     else
-    message_invalid= 1;
+    return(-1);
     memset (txt, '\0', 20);
-    for(i= starting_address_of_destination; i < (starting_address_of_destination + 19); i++)
+    for(i= starting_address_of_destination; i < 30; i++)
     {
         j= i- starting_address_of_destination ;
-        txt[j] = message_received[i];
-        if(message_received[i]== 0x00)
+        if( message_received[i] == ';')
         break;
+        txt[j] = message_received[i];
+        
     }
-    if( !strcmp(txt, "BED1"))
-    trip[num].dest_location= BED_1;
-    else if( !strcmp(txt, "BED2"))
-    trip[num].dest_location= BED_2;    
+       
+    if( !(strcmp(txt, "BED1")) )
+    {
+        trip[num].dest_location= BED_1;
+    }
+    else if( !(strcmp(txt, "BED2")) )
+    {
+        trip[num].dest_location= BED_2;  
+    }
+    else
+    {
+        console_print("no destination\n");
+        return (-1) ;
+    }
     return (0);
 }
 

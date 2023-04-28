@@ -74,8 +74,8 @@ typedef struct task_time {
 
 typedef struct task {
     TASK_TIME time;                  // time of trip (using time_t data type)
-    short int source_location;    // source location (using short int data type)
-    short int dest_location;      // destination location (using short int data type)
+    int source_location;    // source location (using short int data type)
+    int dest_location;      // destination location (using short int data type)
 }ROBOT_TASK;
 
 
