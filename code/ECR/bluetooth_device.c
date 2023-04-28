@@ -28,7 +28,7 @@ int connect_bluetooth_device()
         return (1);
         delayMicroseconds(1000);	// one millisecond delay in each iterance
     }
-    console_print("no message\n");
+    console_print("no new messages\n");
 	  return (0);
 }
 
@@ -74,33 +74,46 @@ char check_for_any_new_message()
     if(connect_bluetooth_device())
     {
         parse_message();
+        console_print("\nnew message received: ");
         console_print(message_received);
         create_task();
-    }    
+    }   
+    return (0); 
 }
 
 char create_task()
 {
     char num;
     char i,j;
-    char hour;
-    char minute;
+    int hour;
+    int minute;
     bool message_invalid=0;
     char txt[20];
     char starting_address_of_destination ;
     memset (txt, '\0', 20);
     num=get_message();
     num_of_task= num;
-    
+    //    ***get task time here***
     txt[0] = message_received[0];
     txt[1] = message_received[1];
     hour = atoi(txt);
     if(hour < 25 && hour >=0)
     trip[num].time.hour=hour;
     else 
-    message_invalid =1;
+    return (-1);
+    
     memset (txt, '\0', 20);
-    //console_print("\naction:");
+    
+    txt[0] = message_received[3];
+    txt[1] = message_received[4];
+    minute = atoi(txt);
+    if(minute < 60 && minute >=0)
+    trip[num].time.minute=minute;
+    else 
+    return (-1);
+
+    
+    memset (txt, '\0', 20);
     for(i=9; i<19; i++)
     {
       j=i-9;
@@ -130,6 +143,7 @@ char create_task()
     trip[num].dest_location= BED_1;
     else if( !strcmp(txt, "BED2"))
     trip[num].dest_location= BED_2;    
+    return (0);
 }
 
 char get_message()
@@ -147,7 +161,7 @@ char get_message()
         task_list = task_list | 0b10000000 ;
         #ifdef TASK_LIST_LOG
         sprintf(msg, "\nnum1");
-        console_print(msg);                   
+        //console_print(msg);                   
         #endif             
     }
     else if(! (task_list & 0b01000000))
@@ -156,7 +170,7 @@ char get_message()
         task_list = task_list | 0b01000000 ;
         #ifdef TASK_LIST_LOG
         sprintf(msg, "\nnum2");
-        console_print(msg);                  
+        //console_print(msg);                  
         #endif              
     }
     else if(! (task_list & 0b00100000))
@@ -165,7 +179,7 @@ char get_message()
         task_list = task_list | 0b00100000 ;
         #ifdef TASK_LIST_LOG
         sprintf(msg, "\nnum3");
-        console_print(msg);                
+        //console_print(msg);                
         #endif
     }
     else
@@ -173,11 +187,11 @@ char get_message()
         console_print("tasks filled");
         message_reply("tasks filled");
     }
-    #ifdef TASK_LIST_LOG
+    //#ifdef TASK_LIST_LOG
     sprintf(msg, "\nList: ");
-    console_print(msg);
-    print_binary(task_list);
-    console_print("\n");
-    #endif
+    //console_print(msg);
+    //print_binary(task_list);
+    //console_print("\n");
+    //#endif
     return (task_number);
 }

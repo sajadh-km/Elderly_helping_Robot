@@ -81,8 +81,7 @@ void loop()
       {
           j=i+1;
           console_print("**********************************************************************\n");
-          sprintf(txt, "task%d  |  time:  %d:%d  |  material: %d  |  destination: %d\n", j, trip[j].time.hour,
-                                             trip[j].time.minute, trip[j].source_location, trip[j].dest_location);          
+          sprintf(txt, "task%d  |  time:  %d:%d  |  material: %d  |  destination: %d\n", j, trip[j].time.hour,trip[j].time.minute, trip[j].source_location, trip[j].dest_location);          
           console_print(txt);
           console_print("**********************************************************************\n");
       }

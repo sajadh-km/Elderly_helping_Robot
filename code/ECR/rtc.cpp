@@ -19,7 +19,7 @@ int get_time()
 {
   myRTC.updateTime();
   char txt[10];
-  sprintf(txt, "%d:%d\n", myRTC.hours, myRTC.minutes);
+  sprintf(txt, "\n%d:%d\n", myRTC.hours, myRTC.minutes);
   console_print(txt);
   return (0);
 }

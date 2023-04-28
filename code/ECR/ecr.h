@@ -68,8 +68,8 @@
 
 
 typedef struct task_time {
-    char hour;
-    char minute;
+    int hour;
+    int minute;
 } TASK_TIME;
 
 typedef struct task {
