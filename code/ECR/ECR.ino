@@ -20,10 +20,10 @@
 #include "motors.c"
 #include "bluetooth_device.c"
 #include "navigate.c"
-/*
-#include "rtc.cpp"
+
+//#include "rtc.cpp"
 #include "color.c"
-*/
+
 #define   MOBILE_DEVICE            Serial1
 #define   CONSOLE                  Serial
 
@@ -58,10 +58,16 @@ void setup()
     pinMode(RIGHT_MOTOR_PIN_1, OUTPUT);
     pinMode(LEFT_MOTOR_PIN_2, OUTPUT);
     pinMode(RIGHT_MOTOR_PIN_2, OUTPUT);
+    
+    pinMode(BLUE_LED, OUTPUT);
+    pinMode(RED_LED, OUTPUT);
+    pinMode(GREEN_LED1, OUTPUT);
+    pinMode(GREEN_LED2, OUTPUT);
 
     //  ***declare inputs***
     pinMode(LEFT_LINE_SENSOR, INPUT);
     pinMode(RIGHT_LINE_SENSOR, INPUT);
+    
 }
 
 void loop() 
@@ -70,6 +76,7 @@ void loop()
       int i, j;
       char txt[40];
       static unsigned long lastTime = 0;
+      /*
       unsigned long currentTime = millis();
       if (currentTime - lastTime >= 10) 
       {
@@ -85,6 +92,12 @@ void loop()
           console_print(txt);
           console_print("**********************************************************************\n");
       }
+      */
+      unsigned char color;
+      color = check_color();
+      //Serial.print(color, BIN);
+      //Serial.println("");
+      //delay(2000);
 }
 
 int message_available()

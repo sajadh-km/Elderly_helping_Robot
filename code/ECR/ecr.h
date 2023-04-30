@@ -22,22 +22,23 @@
 
 //        ***LED pins are declared here***        
 
-#define RED_LED                  2
-#define GREEN_LED                3
-#define BLUE_LED                 4            
+#define RED_LED                  22
+#define GREEN_LED1               23
+#define GREEN_LED2               24           
+#define BLUE_LED                 25
 
 //        ***IR line sensors***
 
-#define LEFT_LINE_SENSOR         2
-#define RIGHT_LINE_SENSOR        3
+#define LEFT_LINE_SENSOR         8
+#define RIGHT_LINE_SENSOR        7
 
 //        ***othr pins***
 
-#define LDR                     5
+#define LDR                     A0
 
 //
 
-//#define   MOBILE_DEVICE         Serial1
+
 
 //        ***locations are defined here***
 
@@ -50,13 +51,29 @@
 #define BED_3                    7
 
 //        ***Colors defined here***
-
-#define RED                      1
-#define GREEN                    2
-#define BLUE                     3
-#define PURPLE                   4
-#define WHITE                    5
-#define BLACK                    6
+/*
+#define RED                      0x04
+#define GREEN                    0x02
+#define BLUE                     0x01
+#define MAGENTA                  0x05
+#define CYAN                     0x06
+#define YELLOW                   0x03
+#define WHITE                    0x07
+#define BLACK                    0x08
+*/
+enum color_code {
+  BLACK,
+  WHITE,
+  RED,
+  GREEN,
+  BLUE,
+  MAGENTA,
+  YELLOW,
+  ORANGE,
+  LIGHT_BLUE,
+  LIGHT_GREEN,
+  VIOLET
+};
 
 
 //        ***line sensor positions***
@@ -91,6 +108,9 @@ int turn_right(int duration);
 char check_sensors();
 void follow_line();
 int get_time();
-char check_color();
+unsigned char
+
+
+ check_color();
 
 #endif
