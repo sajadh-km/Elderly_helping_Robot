@@ -17,11 +17,16 @@ virtuabotixRTC myRTC(6, 7, 8);
 
 int get_time(int* hr, int* min)  
 {
+  #if 1   //test
+  static int dummy_min=0;
+  dummy_min++;
+  *hr    = 12;
+  *min   = dummy_min;
+  #endif
   myRTC.updateTime();
-  char txt[10];
-  sprintf(txt, "\n%d:%d\n", myRTC.hours, myRTC.minutes);
+  /*
   *hr = myRTC.hours;
   *min= myRTC.minutes;
-  console_print(txt);
+  */
   return (0);
 }

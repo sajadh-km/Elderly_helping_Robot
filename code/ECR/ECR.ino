@@ -27,9 +27,12 @@
 #define   MOBILE_DEVICE            Serial1
 #define   CONSOLE                  Serial
 
-char message_received[30];
-char num_of_task;
-ROBOT_TASK trip[4];
+char                    message_received[30];
+char                    num_of_task;
+
+int                     hour=12;
+int                     minute=30; 
+ROBOT_TASK              trip[4];
 
 #if 0
 int connect_bluetooth_device()
@@ -74,12 +77,11 @@ void loop()
 {
       int                     res     =  -1;
       int                     i, j;
-      char                    txt[40];
-      int                     hour=12;
-      int                     minute=30;      
+      char                    txt[40];     
       unsigned char           color;
       static unsigned long    lastTime = 0;
       unsigned long           currentTime = millis();
+      char                    current_task_num=0;
       if (currentTime - lastTime >= 10) 
       {
           lastTime = currentTime;
@@ -96,7 +98,7 @@ void loop()
           console_print(txt);
           console_print("**********************************************************************\n");
       }
-
+      current_task_num = compare_task_time();
 
        //color = check_color();
       
@@ -125,3 +127,16 @@ void print_binary(char message)
     CONSOLE.print(message, BIN);  
 }
 
+int compare_task_time()
+{
+    char i=0;
+    for (i=0; i<4; i++)
+    {
+        if(trip[i].time.hour == hour && trip[i].time.minute == minute)
+        {
+            console_print("trip triggered\n");
+            return (i+1);      
+        }
+    }
+    return (0);
+}
