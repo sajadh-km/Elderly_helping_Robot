@@ -6,13 +6,9 @@
 /******************************************************************/
 #include "Arduino.h"
 #include "ecr.h"
-/*
-extern turn_left(int duration);
-extern turn_right(int duration);
-extern move_back(int duration);
-extern move_forward(int duration);
-*/
-void follow_line()
+
+
+char follow_line()
 {
     char robot_position=0;
     char txt[10];
@@ -25,8 +21,7 @@ void follow_line()
     move_forward(10);
     else
     move_back(50);
-    //sprintf(txt, "=%d  \n", robot_position);
-    //console_print(txt);
+    return (0);
 }
 
 

@@ -70,6 +70,7 @@ void setup()
     //  ***declare inputs***
     pinMode(LEFT_LINE_SENSOR, INPUT);
     pinMode(RIGHT_LINE_SENSOR, INPUT);
+    pinMode(SWITCH1, INPUT);
     
 }
 
@@ -90,6 +91,7 @@ void loop()
       get_time(&hour, &minute);
       sprintf(txt, "time: %d:%d\n", hour, minute);
       Serial.print(txt);
+      #ifdef DEBUG_MODE
       for(i=0; i < num_of_task; i++)
       {
           j=i+1;
@@ -98,7 +100,10 @@ void loop()
           console_print(txt);
           console_print("**********************************************************************\n");
       }
-      current_task_num = compare_task_time();
+      #endif
+      if(compare_task_time(& current_task_num))
+      do_task(current_task_num);
+      
 
        //color = check_color();
       
@@ -127,7 +132,7 @@ void print_binary(char message)
     CONSOLE.print(message, BIN);  
 }
 
-int compare_task_time()
+int compare_task_time(char* task_num)
 {
     char i=0;
     for (i=0; i<4; i++)
@@ -135,8 +140,70 @@ int compare_task_time()
         if(trip[i].time.hour == hour && trip[i].time.minute == minute)
         {
             console_print("trip triggered\n");
-            return (i+1);      
+            task_num =i;
+            return (1);      
         }
     }
     return (0);
+}
+void do_task(char num)
+{
+    fetch_material(trip[num].source_location);
+    supply(trip[num].dest_location);
+    back_to_start_position();
+}
+void fetch_material(char num)
+{
+    unsigned char    received_color;
+    while(! follow_line());
+    received_color = check_color();
+    if(received_color == num)
+    {
+        turn_90_degree();
+        while(! follow_line());
+        take();
+        turn_180_degree();
+        while(! follow_line());
+        turn_90_degree();        
+    } 
+}
+void supply(char des)
+{
+    while( !follow_line());
+    beep();
+}
+void back_to_start_position()
+{
+
+}
+void turn_90_degree()
+{
+
+}
+void turn_180_degree()
+{
+
+}
+void take()
+{
+
+
+}
+void beep()
+{
+    static boolean state = HIGH;
+    int    button=0;
+    int    i;
+    while(! button)
+    {          
+        digitalWrite(BUZZER, state);
+        state = !state;
+        for(i=0; i<200; i++)
+        {
+            button = digitalRead(SWITCH1);
+            delay(1);
+        }
+    } 
+    digitalWrite(BUZZER, LOW); 
+
 }

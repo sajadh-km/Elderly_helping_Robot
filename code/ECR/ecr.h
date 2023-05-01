@@ -35,6 +35,8 @@
 //        ***othr pins***
 
 #define LDR                     A0
+#define BUZZER                  14
+#define SWITCH1                 15
 
 //
 
@@ -62,8 +64,6 @@
 #define BLACK                    0x08
 */
 enum color_code {
-  BLACK,
-  WHITE,
   RED,
   GREEN,
   BLUE,
@@ -72,7 +72,9 @@ enum color_code {
   ORANGE,
   LIGHT_BLUE,
   LIGHT_GREEN,
-  VIOLET
+  VIOLET,
+  BLACK,
+  WHITE
 };
 
 
@@ -106,7 +108,7 @@ int stop_motors();
 int turn_left(int duration);
 int turn_right(int duration);
 char check_sensors();
-void follow_line();
+char follow_line();
 int get_time(int* hr, int* min);
 unsigned char
 
