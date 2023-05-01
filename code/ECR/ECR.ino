@@ -72,18 +72,22 @@ void setup()
 
 void loop() 
 {
-      int res =  -1;
-      int i, j;
-      char txt[40];
-      static unsigned long lastTime = 0;
-      /*
-      unsigned long currentTime = millis();
+      int                     res     =  -1;
+      int                     i, j;
+      char                    txt[40];
+      int                     hour=12;
+      int                     minute=30;      
+      unsigned char           color;
+      static unsigned long    lastTime = 0;
+      unsigned long           currentTime = millis();
       if (currentTime - lastTime >= 10) 
       {
           lastTime = currentTime;
           check_for_any_new_message();
       }
-      get_time();
+      get_time(&hour, &minute);
+      sprintf(txt, "time: %d:%d\n", hour, minute);
+      Serial.print(txt);
       for(i=0; i < num_of_task; i++)
       {
           j=i+1;
@@ -92,12 +96,11 @@ void loop()
           console_print(txt);
           console_print("**********************************************************************\n");
       }
-      */
-      unsigned char color;
-      color = check_color();
-      //Serial.print(color, BIN);
-      //Serial.println("");
-      //delay(2000);
+
+
+       //color = check_color();
+      
+     
 }
 
 int message_available()

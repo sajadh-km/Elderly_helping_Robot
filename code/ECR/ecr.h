@@ -107,7 +107,7 @@ int turn_left(int duration);
 int turn_right(int duration);
 char check_sensors();
 void follow_line();
-int get_time();
+int get_time(int* hr, int* min);
 unsigned char
 
 
