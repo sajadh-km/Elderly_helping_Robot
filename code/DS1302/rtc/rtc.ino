@@ -1,12 +1,13 @@
 #include <virtuabotixRTC.h>
 // Creation of the Real Time Clock Object
-virtuabotixRTC myRTC(6, 7, 8);
+virtuabotixRTC myRTC(2, 3, 4);
+//virtuabotixRTC myRTC(6, 7, 8);
 
 void setup()  {
   Serial.begin(19200);
   // Set the current date, and time in the following format:
   // seconds, minutes, hours, day of the week, day of the month, month, year
-  //myRTC.setDS1302Time(0, 12, 9, 5, 27, 4, 2023);
+  //myRTC.setDS1302Time(22, 36, 22, 2, 1, 5, 2023);
 }
 
 void loop()  {

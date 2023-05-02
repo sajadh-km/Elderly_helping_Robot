@@ -15,10 +15,10 @@
 
 //        ***motor pins are declared here***       
 
-#define LEFT_MOTOR_PIN_1        9
-#define LEFT_MOTOR_PIN_2        10
-#define RIGHT_MOTOR_PIN_1       11
-#define RIGHT_MOTOR_PIN_2       12
+#define LEFT_MOTOR_PIN_1         9
+#define LEFT_MOTOR_PIN_2         10
+#define RIGHT_MOTOR_PIN_1        11
+#define RIGHT_MOTOR_PIN_2        12
 
 //        ***LED pins are declared here***        
 
@@ -29,16 +29,16 @@
 
 //        ***IR line sensors***
 
-#define LEFT_LINE_SENSOR         8
-#define RIGHT_LINE_SENSOR        7
+#define LEFT_END_SENSOR          26
+#define LEFT_LINE_SENSOR         27
+#define RIGHT_LINE_SENSOR        28
+#define RIGHT_END_SENSOR         29
 
-//        ***othr pins***
+//        ***other pins***
 
-#define LDR                     A0
-#define BUZZER                  14
-#define SWITCH1                 15
-
-//
+#define LDR                      A0
+#define BUZZER                   14
+#define SWITCH1                  15
 
 
 
@@ -107,6 +107,8 @@ int move_back(int duration);
 int stop_motors();
 int turn_left(int duration);
 int turn_right(int duration);
+int turn_full_left(int duration);
+int turn_full_right(int duration);
 char check_sensors();
 char follow_line();
 int get_time(int* hr, int* min);

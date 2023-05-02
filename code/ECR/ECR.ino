@@ -70,6 +70,8 @@ void setup()
     //  ***declare inputs***
     pinMode(LEFT_LINE_SENSOR, INPUT);
     pinMode(RIGHT_LINE_SENSOR, INPUT);
+    pinMode(LEFT_END_SENSOR, INPUT);
+    pinMode(RIGHT_END_SENSOR, INPUT);
     pinMode(SWITCH1, INPUT);
     
 }
@@ -83,6 +85,7 @@ void loop()
       static unsigned long    lastTime = 0;
       unsigned long           currentTime = millis();
       char                    current_task_num=0;
+      
       if (currentTime - lastTime >= 10) 
       {
           lastTime = currentTime;
@@ -91,6 +94,8 @@ void loop()
       get_time(&hour, &minute);
       sprintf(txt, "time: %d:%d\n", hour, minute);
       Serial.print(txt);
+      //delay(3000);
+      
       #ifdef DEBUG_MODE
       for(i=0; i < num_of_task; i++)
       {
@@ -104,8 +109,10 @@ void loop()
       if(compare_task_time(& current_task_num))
       do_task(current_task_num);
       
+      //follow_line();
 
-       //color = check_color();
+      // Serial.println(check_sensors(), BIN);
+       
       
      
 }
