@@ -22,10 +22,10 @@
 
 //        ***LED pins are declared here***        
 
-#define RED_LED                  22
-#define GREEN_LED1               23
-#define GREEN_LED2               24           
-#define BLUE_LED                 25
+#define RED_LED                  16 //22
+#define GREEN_LED1               17  //23
+#define GREEN_LED2               15  //24           
+#define BLUE_LED                 14  //25
 
 //        ***IR line sensors***
 

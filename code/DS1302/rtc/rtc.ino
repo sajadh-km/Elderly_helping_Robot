@@ -7,7 +7,7 @@ void setup()  {
   Serial.begin(19200);
   // Set the current date, and time in the following format:
   // seconds, minutes, hours, day of the week, day of the month, month, year
-  //myRTC.setDS1302Time(22, 36, 22, 2, 1, 5, 2023);
+  myRTC.setDS1302Time(10, 31, 21, 4, 3, 5, 2023);
 }
 
 void loop()  {

@@ -33,7 +33,8 @@ char                    num_of_task;
 int                     hour=12;
 int                     minute=30; 
 ROBOT_TASK              trip[4];
-
+char                    task_list=0b00000000;
+    
 #if 0
 int connect_bluetooth_device()
 {
@@ -73,7 +74,9 @@ void setup()
     pinMode(LEFT_END_SENSOR, INPUT);
     pinMode(RIGHT_END_SENSOR, INPUT);
     pinMode(SWITCH1, INPUT);
-    
+    move_forward(300);
+    //move_back(1000);
+    Serial.println(task_list, BIN);
 }
 
 void loop() 
@@ -94,7 +97,7 @@ void loop()
       get_time(&hour, &minute);
       sprintf(txt, "time: %d:%d\n", hour, minute);
       Serial.print(txt);
-      //delay(3000);
+      
       
       #ifdef DEBUG_MODE
       for(i=0; i < num_of_task; i++)
@@ -107,9 +110,11 @@ void loop()
       }
       #endif
       if(compare_task_time(& current_task_num))
-      do_task(current_task_num);
-      
-      //follow_line();
+      {      
+          do_task(current_task_num);
+          console_print("done task\n");
+      }
+      //
 
       // Serial.println(check_sensors(), BIN);
        
@@ -155,6 +160,13 @@ int compare_task_time(char* task_num)
 }
 void do_task(char num)
 {
+    trip[num].time.hour=NULL;
+    if(num==1)
+    task_list |= 0b01111111;
+    if(num==2)
+    task_list |= 0b10111111;
+    if(num==3)
+    task_list |= 0b11011111;
     fetch_material(trip[num].source_location);
     supply(trip[num].dest_location);
     back_to_start_position();
@@ -163,6 +175,13 @@ void fetch_material(char num)
 {
     unsigned char    received_color;
     while(! follow_line());
+    console_print("line end\n");
+    move_forward(3000);
+    turn_full_left(3000);
+    move_back(1000);    
+    turn_90_degree();
+    while(! follow_line());
+    
     received_color = check_color();
     if(received_color == num)
     {
@@ -185,7 +204,9 @@ void back_to_start_position()
 }
 void turn_90_degree()
 {
-
+    turn_full_left(2000);
+    while(check_sensors() != 8)
+    turn_full_left(10);
 }
 void turn_180_degree()
 {

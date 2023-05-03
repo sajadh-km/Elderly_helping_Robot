@@ -16,7 +16,8 @@ extern void console_print(char* message);
 extern void print_binary(char message);
 extern ROBOT_TASK trip[4];
 extern char num_of_task;
-
+extern char task_list;
+    
 int connect_bluetooth_device()
 {
 	int iterance=0;
@@ -162,7 +163,6 @@ char create_task()
 char get_message()
 {
     #define TASK_LIST_LOG  
-    static char task_list=0b00000000;
     char task_number;
     #ifdef TASK_LIST_LOG
     char msg[20];
