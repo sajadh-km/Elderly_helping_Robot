@@ -60,7 +60,7 @@ void setup()
 {
     MOBILE_DEVICE.begin(9600);
     CONSOLE.begin(19200);
-    CONSOLE.println("ECR");
+    CONSOLE.println("ECR2");
     memset(message_received, '\0', sizeof(message_received));
     //  ***declare outputs***
     pinMode(LEFT_MOTOR_PIN_1, OUTPUT);
@@ -81,16 +81,8 @@ void setup()
     pinMode(LEFT_END_SENSOR, INPUT);
     pinMode(RIGHT_END_SENSOR, INPUT);
     pinMode(SWITCH1, INPUT);
-    //move_forward(300); 
-   
-    while(1)
-    {
-        check_color();
-        delay(500);
-    }    
+    move_forward(30);   
     while(!move_on_debug());
-
-    
 }
 
 void loop() 
@@ -124,7 +116,12 @@ void loop()
       }
       #endif
       if(compare_task_time(& current_task_num))
-      {      
+      {     
+          CONSOLE.print("source: ");
+          CONSOLE.print(trip[current_task_num].source_location) ;
+          CONSOLE.print("  desti: ");
+          CONSOLE.println(trip[current_task_num].dest_location);
+          delay(15000);
           do_task(current_task_num);
           console_print("done task\n");
       }
@@ -160,6 +157,7 @@ int compare_task_time(char* task_num)
         if(trip[i].time.hour == hour && trip[i].time.minute == minute)
         {
             console_print("trip triggered\n");
+            
             //tone2();
             //tone2();
             //beep();
@@ -178,41 +176,82 @@ void do_task(char num)
     task_list |= 0b10111111;
     if(num==3)
     task_list |= 0b11011111;
-    fetch_material(trip[num].source_location);
+    while(fetch_material(trip[num].source_location));
+    while(1);
     supply(trip[num].dest_location);
     back_to_start_position();
 }
-void fetch_material(char num)
+char fetch_material(int item)
 {
-    unsigned char    received_color;
+    int    received_color;
+    char   repeat =3;
+    move_forward(1000);
     while(! follow_line());
     console_print("line end\n");
-    move_forward(3000);
-    turn_full_left(3000);
-    move_back(1000);    
-    turn_90_degree();
-    while(! follow_line());
-    
-    received_color = check_color();
-    if(received_color == num)
+    while(repeat--)
+    {
+      received_color = check_color();
+      if(received_color == item)
+      break;
+    }
+    CONSOLE.print("item: ");
+    CONSOLE.print(item);
+    CONSOLE.print("  color: ");
+    CONSOLE.println(received_color);
+    if(received_color == item)
     { 
+        tone1();
+        console_print("color match\n");
+        delay(15000);
+        move_forward(3000);
+        turn_full_left(3000);
+        move_back(2000);  
         arm_open();
         turn_90_degree();
         while(! follow_line());
         take();
         turn_180_degree();
         while(! follow_line());
-        turn_90_degree();        
+        turn_90_degree();  
+        return(0);      
     } 
+    console_print("no color match");
+    delay(5000);
+    return (1);
 }
 void supply(char des)
 {
+    unsigned char    received_color;
+    move_forward(1000);
+    while(! follow_line());
+    console_print("line end\n");
+    
+    received_color = check_color();
+    received_color = check_color();
+    if(received_color == des)
+    { 
+        tone1();
+        move_forward(3000);
+        turn_full_left(3000);
+        move_back(2000);  
+        turn_90_degree();
+        while(! follow_line());
+        while(! button_press())
+        beep();
+        arm_open();
+        delay(10000);
+        turn_180_degree();
+        arm_close();
+        while(! follow_line());
+        turn_180_counter_clock_wise();
+
+    } 
+    return (1);
     while( !follow_line());
     if(check_color()==des)
     turn_90_degree();
     while(! follow_line());    
-    while(! button_press())
-    beep();
+    
 }
 char button_press()
 {
@@ -225,7 +264,7 @@ void back_to_start_position()
 void turn_90_degree()
 {
     turn_full_left(2000);
-    while(check_sensors() != 8)
+    while(check_sensors() != 1)
     turn_full_left(10);
 }
 void turn_180_degree()
@@ -252,11 +291,11 @@ void arm_close()
 char move_on_debug()
 {
     unsigned long           currentTime = millis();
-    unsigned long           lastTime;
+    static unsigned long           lastTime;
     char                    current_task_num=0;
     int le =0;
       
-    if (currentTime - lastTime >= 10000) 
+    if ((currentTime - lastTime) > 10000) 
     return(1);
     if(Serial.available())
     {
@@ -264,12 +303,12 @@ char move_on_debug()
         lastTime=currentTime;
     }
     if(le == '2')
-    move_forward(100);
+    move_forward(500);
     else if(le == '8')
     move_back(100);
     else if(le == '6')
-    turn_full_left(100);
+    turn_full_left(500);
     else if(le == '4')
-    turn_full_right(100); 
+    turn_full_right(500); 
     return(0);
 }

@@ -29,7 +29,7 @@ void all_led_off()
     delay(1000);
 }
 
-unsigned char check_color()
+int check_color()
 {
     char txt[40];
     unsigned int red_intensity  =0;
@@ -37,7 +37,7 @@ unsigned char check_color()
     unsigned int blue_intensity =0;
     int total_of_all_color=0;
     int average_of_all_color=0;
-    unsigned char result=0;
+    int result=0;
 
     
     digitalWrite(RED_LED, LOW);
@@ -67,32 +67,37 @@ unsigned char check_color()
     if(red_intensity>90 && green_intensity>75 && blue_intensity>77)
     {
         console_print("White");
-        //return (WHITE);                                         
+        return (WHITE);                                         
     }
     else if(red_intensity<20 && green_intensity<20 && blue_intensity<10 )                        
     {
         console_print("black");
-        //return (BLACK);
+        return (BLACK);
     }
     else if(red_intensity>75 && red_intensity<112 && green_intensity>7 && green_intensity<11 && blue_intensity>10 && blue_intensity<16)
     {
         console_print("red\n");
+        return(RED);
     }
     else if(red_intensity>35 && red_intensity<53 && green_intensity>58 && green_intensity<88 && blue_intensity>12 && blue_intensity<19)
     {
         console_print("green\n");
+        return (GREEN);
     }
     else if(red_intensity>13 && red_intensity<21 && green_intensity>52 && green_intensity<79 && blue_intensity>64 && blue_intensity<97)
     {
         console_print("blue\n");
+        return (BLUE);
     }
     else if(red_intensity>78 && red_intensity<118 && green_intensity>16 && green_intensity<25 && blue_intensity>48 && blue_intensity<72)
     {
         console_print("magenta\n");
+        return (MAGENTA);
     }
     else if(red_intensity>80 && red_intensity<120 && green_intensity>63 && green_intensity<95 && blue_intensity>13 && blue_intensity<20)
     {
         console_print("yellow\n");
+        return (YELLOW);
     }
     /*
     else if(red_intensity>88 && red_intensity<98 && green_intensity>57 && green_intensity<70 && blue_intensity<58 && blue_intensity>48)
@@ -111,12 +116,13 @@ unsigned char check_color()
     else if(red_intensity>36 && red_intensity<55 && green_intensity>16 && green_intensity<24 && blue_intensity>56 && blue_intensity<84)
     {
         console_print("violet\n");
+        return (VIOLET);
     }
     else
     {
         console_print("other\n");
     }
 
-    return (result);
+    return (-1);
     
 }

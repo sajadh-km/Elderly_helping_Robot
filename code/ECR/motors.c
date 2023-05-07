@@ -87,3 +87,7 @@ int turn_full_right(int duration)
 	  stop_motors();
 	  return(0);
 }
+int turn_180_counter_clock_wise()
+{
+  ;
+}

@@ -134,6 +134,8 @@ char create_task()
     trip[num].source_location= WATER;
     else
     return(-1);
+    console_print("src:");
+    print_binary(trip[num].source_location);
     memset (txt, '\0', 20);
     for(i= starting_address_of_destination; i < 30; i++)
     {
@@ -157,6 +159,9 @@ char create_task()
         console_print("no destination\n");
         return (-1) ;
     }
+    
+    console_print(" des:");
+    print_binary(trip[num].dest_location);
     return (0);
 }
 

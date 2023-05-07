@@ -46,13 +46,11 @@
 
 //        ***locations are defined here***
 
-#define FOOD                     1
-#define WATER                    2
+#define FOOD                     2
 #define MEDICINE                 3
-#define BOOK                     4
+#define WATER                    4
 #define BED_1                    5
 #define BED_2                    6
-#define BED_3                    7
 
 //        ***Colors defined here***
 /*
@@ -65,18 +63,15 @@
 #define WHITE                    0x07
 #define BLACK                    0x08
 */
-enum color_code {
+enum color_code {  
+  BLACK,
+  WHITE,
   RED,
-  GREEN,
   BLUE,
+  VIOLET,
   MAGENTA,
   YELLOW,
-  ORANGE,
-  LIGHT_BLUE,
-  LIGHT_GREEN,
-  VIOLET,
-  BLACK,
-  WHITE
+  GREEN
 };
 
 
@@ -119,6 +114,7 @@ void fr_2();
 void fr_3();
 void tone1();
 void tone2();
-unsigned char check_color();
+int check_color();
+int turn_180_counter_clock_wise();
 
 #endif
