@@ -89,5 +89,16 @@ int turn_full_right(int duration)
 }
 int turn_180_counter_clock_wise()
 {
-  ;
+  turn_right(4000);
+  move_back(2000);
+  while(check_sensors()!=8 )
+  turn_right(20);  
+}
+
+int turn_90_counter_clock_wise()
+{
+  turn_right(2000);
+  move_back(2000);
+  while(check_sensors()!=8 )
+  turn_right(20);
 }

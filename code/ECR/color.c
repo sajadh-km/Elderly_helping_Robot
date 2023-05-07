@@ -74,7 +74,7 @@ int check_color()
         console_print("black");
         return (BLACK);
     }
-    else if(red_intensity>75 && red_intensity<112 && green_intensity>7 && green_intensity<11 && blue_intensity>10 && blue_intensity<16)
+    else if(red_intensity>75 && red_intensity<130 && green_intensity>3 && green_intensity<20 && blue_intensity>4 && blue_intensity<20)
     {
         console_print("red\n");
         return(RED);

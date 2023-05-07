@@ -59,7 +59,7 @@ int connect_bluetooth_device()
 void setup() 
 {
     MOBILE_DEVICE.begin(9600);
-    CONSOLE.begin(19200);
+    CONSOLE.begin(9600);
     CONSOLE.println("ECR2");
     memset(message_received, '\0', sizeof(message_received));
     //  ***declare outputs***
@@ -81,7 +81,26 @@ void setup()
     pinMode(LEFT_END_SENSOR, INPUT);
     pinMode(RIGHT_END_SENSOR, INPUT);
     pinMode(SWITCH1, INPUT);
+    //servos
+    left_arm.attach(A3);
+    right_arm.attach(A2);
     move_forward(30);   
+    /*
+    while (1) 
+    {
+        check_color();
+        
+    }    
+    */
+    /*
+    while(1)
+    {
+        arm_close();  
+        delay(1000);    
+        arm_open();  
+        delay(1000);
+    }
+    */
     while(!move_on_debug());
 }
 
@@ -115,38 +134,17 @@ void loop()
           console_print("**********************************************************************\n");
       }
       #endif
-      if(compare_task_time(& current_task_num))
+      if(compare_task_time( &current_task_num))
       {     
+          console_print("task:");
+          print_binary(current_task_num);
           CONSOLE.print("source: ");
-          CONSOLE.print(trip[current_task_num].source_location) ;
+          print_binary(trip[current_task_num].source_location) ;
           CONSOLE.print("  desti: ");
-          CONSOLE.println(trip[current_task_num].dest_location);
-          delay(15000);
+          print_binary(trip[current_task_num].dest_location);
           do_task(current_task_num);
           console_print("done task\n");
       }
-}
-
-int message_available()
-{
-    return(MOBILE_DEVICE.available());
-}
-
-char message_read()
-{
-    return(MOBILE_DEVICE.read());
-}
-void message_reply(char* text)
-{
-    Serial1.print(text);
-}
-void console_print(char* message) 
-{
-  Serial.println(message);
-}
-void print_binary(char message)
-{
-    CONSOLE.print(message, BIN);  
 }
 
 int compare_task_time(char* task_num)
@@ -156,12 +154,14 @@ int compare_task_time(char* task_num)
     {
         if(trip[i].time.hour == hour && trip[i].time.minute == minute)
         {
-            console_print("trip triggered\n");
+            console_print("trip ");
+            print_binary(i);
+            console_print(" triggered\n");
             
             //tone2();
             //tone2();
             //beep();
-            task_num =i;
+            *task_num =i;
             return (1);      
         }
     }
@@ -202,21 +202,24 @@ char fetch_material(int item)
     { 
         tone1();
         console_print("color match\n");
-        delay(15000);
         move_forward(3000);
-        turn_full_left(3000);
+        turn_full_left(4000);
         move_back(2000);  
         arm_open();
         turn_90_degree();
         while(! follow_line());
         take();
-        turn_180_degree();
-        while(! follow_line());
+        move_back(1000);
+        while(check_sensors()!=15)
+        move_back(20);
+        turn_90_counter_clock_wise();
+        delay(8000);
+        /*while(! follow_line());
         turn_90_degree();  
+        */
         return(0);      
     } 
     console_print("no color match");
-    delay(5000);
     return (1);
 }
 void supply(char des)
@@ -264,7 +267,7 @@ void back_to_start_position()
 void turn_90_degree()
 {
     turn_full_left(2000);
-    while(check_sensors() != 1)
+    while(check_sensors() ==0)
     turn_full_left(10);
 }
 void turn_180_degree()
@@ -280,12 +283,22 @@ void take()
 
 void arm_open()
 {
-    ;
+  int i=110;
+    for(i=110; i>60; i--)
+    {
+        left_arm.write(i);
+        delay(10);
+    } 
 }
 
 void arm_close()
 {
-    ;
+    int i=60;
+    for(i=60; i<110; i++)
+    {
+        left_arm.write(i);
+        delay(10);
+    }    
 }
 
 char move_on_debug()
@@ -311,4 +324,26 @@ char move_on_debug()
     else if(le == '4')
     turn_full_right(500); 
     return(0);
+}
+
+int message_available()
+{
+    return(MOBILE_DEVICE.available());
+}
+
+char message_read()
+{
+    return(MOBILE_DEVICE.read());
+}
+void message_reply(char* text)
+{
+    Serial1.print(text);
+}
+void console_print(char* message) 
+{
+  Serial.println(message);
+}
+void print_binary(char message)
+{
+    CONSOLE.print(message, BIN);  
 }

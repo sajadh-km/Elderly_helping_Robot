@@ -134,6 +134,9 @@ char create_task()
     trip[num].source_location= WATER;
     else
     return(-1);
+    console_print("task");
+    print_binary(num);
+    console_print("\n");
     console_print("src:");
     print_binary(trip[num].source_location);
     memset (txt, '\0', 20);
@@ -141,11 +144,15 @@ char create_task()
     {
         j= i- starting_address_of_destination ;
         if( message_received[i] == ';')
-        break;
+        {
+            txt[j] = message_received[i];
+            break;
+        }
+        
         txt[j] = message_received[i];
         
     }
-       
+    console_print(txt);  
     if( !(strcmp(txt, "BED1")) )
     {
         trip[num].dest_location= BED_1;
@@ -162,6 +169,7 @@ char create_task()
     
     console_print(" des:");
     print_binary(trip[num].dest_location);
+    console_print("\n");
     return (0);
 }
 

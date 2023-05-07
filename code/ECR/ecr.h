@@ -116,5 +116,6 @@ void tone1();
 void tone2();
 int check_color();
 int turn_180_counter_clock_wise();
+int turn_90_counter_clock_wise();
 
 #endif
