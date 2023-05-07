@@ -14,7 +14,7 @@ int stop_motors()
     digitalWrite(LEFT_MOTOR_PIN_2, LOW);
 	  digitalWrite(RIGHT_MOTOR_PIN_1, LOW);
   	digitalWrite(RIGHT_MOTOR_PIN_2, LOW); 
-    delay(5); 
+    delay(1); 
     return (0);	
 }
 

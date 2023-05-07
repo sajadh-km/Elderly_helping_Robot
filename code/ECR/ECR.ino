@@ -20,13 +20,18 @@
 #include "motors.c"
 #include "bluetooth_device.c"
 #include "navigate.c"
+#include "sound.c"
 
 //#include "rtc.cpp"
 #include "color.c"
 
+#include <Servo.h>
+
 #define   MOBILE_DEVICE            Serial1
 #define   CONSOLE                  Serial
 
+Servo                   left_arm;
+Servo                   right_arm;
 char                    message_received[30];
 char                    num_of_task;
 
@@ -68,15 +73,24 @@ void setup()
     pinMode(GREEN_LED1, OUTPUT);
     pinMode(GREEN_LED2, OUTPUT);
 
+    pinMode(BUZZER, OUTPUT);
+
     //  ***declare inputs***
     pinMode(LEFT_LINE_SENSOR, INPUT);
     pinMode(RIGHT_LINE_SENSOR, INPUT);
     pinMode(LEFT_END_SENSOR, INPUT);
     pinMode(RIGHT_END_SENSOR, INPUT);
     pinMode(SWITCH1, INPUT);
-    move_forward(300);
-    //move_back(1000);
-    Serial.println(task_list, BIN);
+    //move_forward(300); 
+   
+    while(1)
+    {
+        check_color();
+        delay(500);
+    }    
+    while(!move_on_debug());
+
+    
 }
 
 void loop() 
@@ -114,12 +128,6 @@ void loop()
           do_task(current_task_num);
           console_print("done task\n");
       }
-      //
-
-      // Serial.println(check_sensors(), BIN);
-       
-      
-     
 }
 
 int message_available()
@@ -152,6 +160,9 @@ int compare_task_time(char* task_num)
         if(trip[i].time.hour == hour && trip[i].time.minute == minute)
         {
             console_print("trip triggered\n");
+            //tone2();
+            //tone2();
+            //beep();
             task_num =i;
             return (1);      
         }
@@ -184,7 +195,8 @@ void fetch_material(char num)
     
     received_color = check_color();
     if(received_color == num)
-    {
+    { 
+        arm_open();
         turn_90_degree();
         while(! follow_line());
         take();
@@ -196,11 +208,19 @@ void fetch_material(char num)
 void supply(char des)
 {
     while( !follow_line());
+    if(check_color()==des)
+    turn_90_degree();
+    while(! follow_line());    
+    while(! button_press())
     beep();
+}
+char button_press()
+{
+    return(0);
 }
 void back_to_start_position()
 {
-
+    ;
 }
 void turn_90_degree()
 {
@@ -210,28 +230,46 @@ void turn_90_degree()
 }
 void turn_180_degree()
 {
-
+    turn_full_left(4000);
+    while(check_sensors() != 8)
+    turn_full_left(10);
 }
 void take()
 {
-
-
+    arm_close();
 }
-void beep()
-{
-    static boolean state = HIGH;
-    int    button=0;
-    int    i;
-    while(! button)
-    {          
-        digitalWrite(BUZZER, state);
-        state = !state;
-        for(i=0; i<200; i++)
-        {
-            button = digitalRead(SWITCH1);
-            delay(1);
-        }
-    } 
-    digitalWrite(BUZZER, LOW); 
 
+void arm_open()
+{
+    ;
+}
+
+void arm_close()
+{
+    ;
+}
+
+char move_on_debug()
+{
+    unsigned long           currentTime = millis();
+    unsigned long           lastTime;
+    char                    current_task_num=0;
+    int le =0;
+      
+    if (currentTime - lastTime >= 10000) 
+    return(1);
+    if(Serial.available())
+    {
+        le=Serial.read();
+        lastTime=currentTime;
+    }
+    if(le == '2')
+    move_forward(100);
+    else if(le == '8')
+    move_back(100);
+    else if(le == '6')
+    turn_full_left(100);
+    else if(le == '4')
+    turn_full_right(100); 
+    return(0);
 }

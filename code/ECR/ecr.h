@@ -13,6 +13,8 @@
 
 //#include <HardwareSerial.h>
 
+
+#define BUZZER                   13
 //        ***motor pins are declared here***       
 
 #define LEFT_MOTOR_PIN_1         9
@@ -37,7 +39,7 @@
 //        ***other pins***
 
 #define LDR                      A0
-#define BUZZER                   14
+#define BUZZER                   13
 #define SWITCH1                  15
 
 
@@ -112,9 +114,11 @@ int turn_full_right(int duration);
 char check_sensors();
 char follow_line();
 int get_time(int* hr, int* min);
-unsigned char
-
-
- check_color();
+void fr_1();
+void fr_2();
+void fr_3();
+void tone1();
+void tone2();
+unsigned char check_color();
 
 #endif
