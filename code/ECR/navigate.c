@@ -27,25 +27,9 @@
 */
 char follow_line_reverse()
 {
-    char robot_position=0;
-    char txt[10];
-    robot_position = check_sensors();
-    if(robot_position == 2)
-    turn_left_reverse(5);
-    else if(robot_position == 1 || robot_position == 3)
-    turn_full_left(5);
-    else if(robot_position == 4)
-    turn_right_reverse(5);
-    else if(robot_position == 8 || robot_position == 12)
-    turn_full_right(5);
-    else if(robot_position == 6)
-    move_back(10);
-    else if(robot_position == 15 )
-    return (1);
-    else
-    move_back(2);
-    //console_print("bak\n");
-    //move_back(50);
+    if(analogRead(BACK_LINE))
+    turn_left_reverse(100);
+    
     return (0);
 }
 char follow_line()

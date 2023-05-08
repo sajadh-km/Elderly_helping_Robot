@@ -99,9 +99,11 @@ void setup()
         delay(1000);    
         arm_open();  
         delay(1000);
+        console_print("test");
     }
     */
-    while(!move_on_debug());
+     
+     while(!move_on_debug());
 }
 
 void loop() 
@@ -158,16 +160,15 @@ int compare_task_time(char* task_num)
             print_binary(i);
             console_print(" triggered\n");
             
-            //tone2();
-            //tone2();
-            //beep();
+            tone2();
             *task_num =i;
             return (1);      
         }
     }
     return (0);
 }
-void do_task(char num)
+/******************do task when time arrived**********************/
+void do_task(char num) 
 {
     trip[num].time.hour=NULL;
     if(num==1)
@@ -177,10 +178,21 @@ void do_task(char num)
     if(num==3)
     task_list |= 0b11011111;
     while(fetch_material(trip[num].source_location));
-    while(1);
-    supply(trip[num].dest_location);
-    back_to_start_position();
-}
+    delay(100);
+
+    while(supply(trip[num].dest_location));
+    delay(2000);
+    tone2();
+    tone1();
+    tone2();
+    tone1();
+    
+    while(back_to_start_position());
+    tone1();
+    tone1();
+    move_forward(2000);
+    turn_180_degree();
+}/*****************************end of task****************************/
 char fetch_material(int item)
 {
     int    received_color;
@@ -210,10 +222,15 @@ char fetch_material(int item)
         while(! follow_line());
         take();
         move_back(1000);
-        while(check_sensors()!=15)
-        move_back(20);
-        turn_90_counter_clock_wise();
-        delay(8000);
+        delay(300);
+        while(check_sensors()!=15) 
+        move_back(50);
+        delay(300);        
+        move_forward(2000);
+        turn_full_right(4000);        
+        delay(800);
+        while(check_sensors()!= 1)
+        turn_full_right(40);
         /*while(! follow_line());
         turn_90_degree();  
         */
@@ -222,47 +239,85 @@ char fetch_material(int item)
     console_print("no color match");
     return (1);
 }
-void supply(char des)
+char supply(char des)
 {
     unsigned char    received_color;
-    move_forward(1000);
+    char             repeat=3;
+    move_forward(100);
     while(! follow_line());
     console_print("line end\n");
-    
-    received_color = check_color();
-    received_color = check_color();
+    while(repeat--)
+    {
+      received_color = check_color();
+      if(received_color == des)
+      break;
+    }
     if(received_color == des)
     { 
-        tone1();
+        tone1();        
         move_forward(3000);
-        turn_full_left(3000);
+        turn_full_left(4000);
         move_back(2000);  
         turn_90_degree();
         while(! follow_line());
-        while(! button_press())
+        //while(! button_press())
         beep();
         arm_open();
         delay(10000);
-        turn_180_degree();
         arm_close();
-        while(! follow_line());
-        turn_180_counter_clock_wise();
 
+        move_back(1000);
+        delay(300);
+        while(check_sensors()!=15) 
+        move_back(50);
+        delay(300);        
+        move_forward(2000);
+        turn_full_left(4000);        
+        delay(800);
+        while(check_sensors()!= 8)
+        turn_full_left(40);
+        tone2();
+    }
+    else
+    {
+        tone1();
+        tone1();
+        //move_forward(200);        
+        return(1);      
     } 
-    return (1);
+    return (0);
+    /*
     while( !follow_line());
     if(check_color()==des)
     turn_90_degree();
     while(! follow_line());    
-    
+    */
 }
 char button_press()
 {
     return(0);
 }
-void back_to_start_position()
+char back_to_start_position()
 {
-    ;
+    char    repeat=3;
+    unsigned char received_color;
+    move_forward(100);
+    while(! follow_line());
+    while(repeat--)
+    {
+      received_color = check_color();
+      if(received_color == GREEN)
+      break;
+    }
+    if(received_color == GREEN)
+    {
+        tone1();
+        return(0);
+    }
+    else
+    {
+        return(1);
+    }
 }
 void turn_90_degree()
 {
@@ -287,6 +342,7 @@ void arm_open()
     for(i=110; i>60; i--)
     {
         left_arm.write(i);
+        right_arm.write(i);
         delay(10);
     } 
 }
@@ -297,6 +353,7 @@ void arm_close()
     for(i=60; i<110; i++)
     {
         left_arm.write(i);
+        right_arm.write(i);
         delay(10);
     }    
 }

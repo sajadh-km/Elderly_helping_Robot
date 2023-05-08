@@ -57,7 +57,8 @@ void beep()
     static boolean state = HIGH;
     int    button=0;
     int    i;
-    while(! button)
+    button = digitalRead(SWITCH1);
+    while(button)
     {          
         digitalWrite(BUZZER, state);
         state = !state;

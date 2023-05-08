@@ -39,8 +39,9 @@
 //        ***other pins***
 
 #define LDR                      A0
-#define BUZZER                   13
-#define SWITCH1                  15
+#define BACK_LINE                A2
+#define BUZZER                    5
+#define SWITCH1                  31
 
 
 
@@ -120,5 +121,6 @@ void tone2();
 int check_color();
 int turn_180_counter_clock_wise();
 int turn_90_counter_clock_wise();
+void beep();
 
 #endif
