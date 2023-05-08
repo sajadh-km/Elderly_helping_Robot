@@ -53,6 +53,17 @@ int turn_left(int duration)
 	  stop_motors();
 	  return(0);
 }
+int turn_left_reverse(int duration)
+{
+    //digitalWrite(LEFT_MOTOR_PIN_1, HIGH);
+    //digitalWrite(LEFT_MOTOR_PIN_2, LOW);
+	  digitalWrite(RIGHT_MOTOR_PIN_1, LOW);
+	  digitalWrite(RIGHT_MOTOR_PIN_2, HIGH);
+    console_print("left\n");
+	  delay(duration);
+	  stop_motors();
+	  return(0);
+}
 int turn_full_left(int duration)
 {
     digitalWrite(LEFT_MOTOR_PIN_1, HIGH);
@@ -71,6 +82,17 @@ int turn_right(int duration)
     //digitalWrite(LEFT_MOTOR_PIN_2, HIGH);
 	  digitalWrite(RIGHT_MOTOR_PIN_1, HIGH);
 	  digitalWrite(RIGHT_MOTOR_PIN_2, LOW);
+    console_print("right\n");
+	  delay(duration);
+	  stop_motors();
+	  return(0);
+}
+int turn_right_reverse(int duration)
+{
+    digitalWrite(LEFT_MOTOR_PIN_1, LOW);
+    digitalWrite(LEFT_MOTOR_PIN_2, HIGH);
+	  //digitalWrite(RIGHT_MOTOR_PIN_1, HIGH);
+	  //digitalWrite(RIGHT_MOTOR_PIN_2, LOW);
     console_print("right\n");
 	  delay(duration);
 	  stop_motors();
