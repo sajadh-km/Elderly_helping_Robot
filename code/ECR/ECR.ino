@@ -181,7 +181,7 @@ void do_task(char num)
     delay(100);
 
     while(supply(trip[num].dest_location));
-    delay(2000);
+    delay(100);
     tone2();
     tone1();
     tone2();
@@ -277,21 +277,9 @@ char supply(char des)
         while(check_sensors()!= 8)
         turn_full_left(40);
         tone2();
-    }
-    else
-    {
-        tone1();
-        tone1();
-        //move_forward(200);        
-        return(1);      
-    } 
-    return (0);
-    /*
-    while( !follow_line());
-    if(check_color()==des)
-    turn_90_degree();
-    while(! follow_line());    
-    */
+        return(0);
+    }        
+    return(1);      
 }
 char button_press()
 {
