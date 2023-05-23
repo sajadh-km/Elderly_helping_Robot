@@ -1,6 +1,5 @@
 front pages
 content list- index-list of picture- list of table
-
 intro/abstract
 
 brief project description
@@ -11,6 +10,7 @@ description of each component
 
 circuit diagram
 block diagram
+arena
 code
 
 result/conclusion
