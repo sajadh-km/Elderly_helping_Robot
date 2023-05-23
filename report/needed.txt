@@ -1,0 +1,21 @@
+front pages
+content list- index-list of picture- list of table
+
+intro/abstract
+
+brief project description
+
+components used
+picture of each component
+description of each component
+
+circuit diagram
+block diagram
+code
+
+result/conclusion
+format check
+
+
+
+
