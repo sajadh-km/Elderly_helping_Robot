@@ -90,9 +90,9 @@ void setup()
     {
         check_color();
         
-    }    
-    */
+    }   */ 
     
+    /*
     while(1)
     {
         arm_close();  
@@ -101,7 +101,7 @@ void setup()
         delay(1000);
         console_print("test");
     }
-    
+    */
      
      while(!move_on_debug());
 }

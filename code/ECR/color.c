@@ -74,17 +74,17 @@ int check_color()
         console_print("black");
         return (BLACK);
     }
-    else if(red_intensity>75 && red_intensity<130 && green_intensity>3 && green_intensity<20 && blue_intensity>4 && blue_intensity<26)
+    else if(red_intensity>73 && red_intensity<130 && green_intensity>3 && green_intensity<20 && blue_intensity>4 && blue_intensity<26)
     {
         console_print("red\n");
         return(RED);
     }
-    else if(red_intensity>35 && red_intensity<59 && green_intensity>56 && green_intensity<88 && blue_intensity>10 && blue_intensity<30)
+    else if(red_intensity>30 && red_intensity<59 && green_intensity>54 && green_intensity<88 && blue_intensity>10 && blue_intensity<30)
     {
         console_print("green\n");
         return (GREEN);
     }
-    else if(red_intensity>13 && red_intensity<39 && green_intensity>52 && green_intensity<79 && blue_intensity>64 && blue_intensity<97)
+    else if(red_intensity>3 && red_intensity<39 && green_intensity>48 && green_intensity<79 && blue_intensity>62 && blue_intensity<97)
     {
         console_print("blue\n");
         return (BLUE);
@@ -94,7 +94,7 @@ int check_color()
         console_print("magenta\n");
         return (MAGENTA);
     }
-    else if(red_intensity>80 && red_intensity<120 && green_intensity>63 && green_intensity<95 && blue_intensity>10 && blue_intensity<29)
+    else if(red_intensity>78 && red_intensity<120 && green_intensity>58 && green_intensity<95 && blue_intensity>10 && blue_intensity<29)
     {
         console_print("yellow\n");
         return (YELLOW);
